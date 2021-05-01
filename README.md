@@ -13,7 +13,7 @@ A package to generate a complete documentation in your python files.
 
  * Author: LostPy
  * Date: 2021-04-25
- * Version: 1.0 (2021-05-01)
+ * Version: 1.0.1 (2021-05-01)
 
 ## Requirements
 
@@ -22,7 +22,7 @@ A package to generate a complete documentation in your python files.
 
 ## Installation
 
-To install this package, use : `pip install git+https://github.com/LostPy/pydocstr.git@main`
+To install this package, use : `pip install git+https://github.com/LostPy/pydocstr.git@stable`
 
 ## Quickly use
 
