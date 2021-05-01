@@ -5,7 +5,7 @@ import argparse
 import pyDocStr
 
 
-DESCRIPTION = ""
+DESCRIPTION = "A package to generate a complete documentation in your python files."
 
 
 def create_parser():
