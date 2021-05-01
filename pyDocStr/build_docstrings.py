@@ -133,7 +133,7 @@ def create_docstrings_from_folder(folderpath: str, formatter: Formatter = Format
 									subfolders: bool = False, remove_decorator: bool = True, decorator_name: str = 'to_document'):
 	_logger.info(f"Start to document the folder: {folderpath}")
 	_logger.info(f"Document subfolders: {subfolders}")
-	for elmt in os.listdir(folderpath)
+	for elmt in os.listdir(folderpath):
 		path_elmt = os.path.join(folderpath, elmt)
 		if new_folderpath is not None:
 			if not os.path.exists(new_folderpath):
