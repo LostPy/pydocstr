@@ -8,6 +8,7 @@ A package to generate a complete documentation in your python files.
  1. Global Informations
  2. Requirements
  3. Installation
+ 4. Quickly start
 
 ## Global Informations
 
@@ -17,14 +18,14 @@ A package to generate a complete documentation in your python files.
 
 ## Requirements
 
- * Optionnal:
+ * Optional:
  	* [colorama][colorama]: for color logs
 
 ## Installation
 
 To install this package, use : `pip install git+https://github.com/LostPy/pydocstr.git@stable`
 
-## Quickly use
+## Quickly start
 
 To document a python file or a folder with pythons files, there are three steps:
  1. In python files to document, import `pyDocStr` with `to_document` decorator
@@ -58,6 +59,23 @@ In the same folder than the file: `python -m pyDocStr ./module_to_document.py -o
 
 To document all python files of a folder, use: `python -m pyDocStr -d path/of/your/folder`.  
 If you wan't documented the subfolders, use: `python -m pyDocStr -d path/of/your/folde --no-subdirs`.
+
+### List options
+
+|name|optional|Description|Value|Default|
+|:--:|:------:|-----------|:---:|:-----:|
+|`file`|✅|The path of python file to document (If `--directory` is not used.|A path (str)|`None`|
+|`--directory`|✅|The path of a folder to document|A path (str)|`None`|
+|`--no-subdirs`|✅|Specifies that sub-directories should not be documented|||
+|`--decorator-name`|✅|To specify the decorator name use for `to_document` decorator. It's used to remove decorators `to_document`.|A str|`to_document`|
+|`--output`|✅|If a file is specified, this is the path where the new source code should be saved. If directory option is specified, must be the path of folder where the news source code should be saved.|A path (str)|The new source code is saved in the old file.|
+|`--formatter`|✅|The formatter to use for the docstring format.|`simple` or `numpy`|`simple`|
+|`--config-formatter`|✅|A file with the configuration for a custom formatter.|A path (str)|`None`|
+|`--level-logger`|✅|The level of logger.|`debug`, `info`, `warning` or `error`|`info`|
+
+> ⚠️ **All parameters are optional**, if there is neither a file nor a directory specified, the help message is displayed.
+
+> ⚠️ If there is **a file and a directory specified**, only the specified directory is documented.
 
 ### Help
 

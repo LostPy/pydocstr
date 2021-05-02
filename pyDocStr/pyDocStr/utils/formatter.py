@@ -7,7 +7,7 @@ class Formatter:
 
 	def __init__(self, description_fmt: str = "{description}\n",
 				field_fmt: str = "{prefix}\n{name}\n{suffix}\n{values}",
-				items_fmt: str = "\t{name} : {type}\n\t\t{description}\n\t\t{default}",
+				items_fmt: str = "{name} : {type}\n\t\t{description}\n\t\t{default}",
 				prefix_field: str = "",
 				suffix_field: str = ""):
 		self.description_fmt = description_fmt
