@@ -3,6 +3,18 @@ from inspect import getmembers
 
 
 def _import_from_path(path: str):
+	"""A function to load a module from a path.
+	
+	Parameters
+	----------
+	path : str
+		The path of module to load.
+	
+	Returns
+	-------
+	module : Module
+		The module imported.
+	"""
 	try:
 		# Import of module from path
 		path = path.replace('\\', '/')
