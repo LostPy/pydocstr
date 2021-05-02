@@ -25,7 +25,14 @@ optional arguments:
 """
 import sys
 import os
+import traceback
 import argparse
+import json
+try:
+	from yaml import YAMLError
+except ModuleNotFoundError:
+	class YAMLError(Exception):
+		pass
 
 import pyDocStr
 
@@ -66,6 +73,7 @@ def get_formatter(name: str):
 	}
 	return formatters[name]
 
+
 if __name__ == "__main__":
 	parser = create_parser()
 	args = parser.parse_args()
@@ -74,7 +82,26 @@ if __name__ == "__main__":
 	if args.config_formatter is None:
 		formatter = get_formatter(args.formatter)
 	else:
-		pass
+		if os.path.exists(args.config_formatter):
+			try:
+				formatter = pyDocStr.utils.Formatter.from_config(args.config_formatter)
+			except KeyError:
+				pyDocStr._logger.error("KeyError was raised in configuration file."\
+						" The file must contain the following keywords: 'description', 'fields', 'items', 'prefix', 'suffix'.")
+				sys.exit(1)
+			except json.JSONDecodeError:
+				pyDocStr._logger.error("A JSONDecodeError was raised. Check the config file. json module can only read json files.")
+				sys.exit(1)
+			except YAMLError:
+				pyDocStr._logger.error("A YAMLError was raised. Check the config file. yaml module can read json and yaml (yml) files.")
+				sys.exit(1)
+			except Exception as e:
+				pyDocStr._logger.error("An exception was raised while reading the configuration file. Check the config file.")
+				pyDocStr._logger.error(traceback.format_exc())
+				sys.exit(1)
+		else:
+			pyDocStr._logger.error(f'The config file was not found: {args.config_formatter}')
+			sys.exit(1)
 
 	pyDocStr._logger.debug("debug mode - informations on the parameters")
 	pyDocStr._logger.debug("-"*20)
@@ -112,5 +139,4 @@ if __name__ == "__main__":
 			sys.exit(1)
 	else:
 		parser.print_help()
-
-	
+	sys.exit(0)	

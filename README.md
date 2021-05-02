@@ -9,6 +9,7 @@ A package to generate a complete documentation in your python files.
  2. Requirements
  3. Installation
  4. Quickly start
+ 5. Use with config formatter file
 
 ## Global Informations
 
@@ -105,5 +106,63 @@ optional arguments:
                         The logger level.
 
 ```
+
+## Use with a configuration file
+
+### The config file
+
+The config file can be a json or a yaml file if the yaml module is installed.
+
+> ℹ️ **Note:** To install the yaml module, use: `python install pyyaml`
+
+The configuration file must have the following 6 keywords:
+
+|name|type|description|keywords|
+|:--:|:--:|-----------|--------|
+|`description`|*str*|The description format for docstrings|`description`|
+|`fields`|*str*|The format of a field in docstring (fields = `Parameters`, `Returns`...)|`name`, `items`, `prefix`, `suffix`|
+|`items`|*str*|The item format, an item is an element of a field (parameter...)|`name`, `description`, `type`, `default`|
+|`prefix`|*str*|The prefix of name field use. The prefix is repeated so that it has the same length as the field name.||
+|`suffix`|*str*|The suffix of name field use. The suffix is repeated so that it has the same length as the field name.||
+
+> ⚠️ **Keywords must be specified between `{}`**: `"{keyword}"`
+
+> ℹ️ **Note:** The keywords can be `null` to use the default value.
+
+Example of a config file with a **yaml file**:
+
+```yaml
+# The format for the description of a function or a class. The key word '{description}' is mandatory.
+description: "{description}\n"
+
+# The format of a field in docstring ('Parameters', 'Returns'...).
+fields: "{prefix}\n{name}\n{suffix}\n{items}"
+
+# The format of a item in a field (a parameter...).
+items: "{name} : {type}\n\t{description}\n\t{default}"
+
+# The prefix use for fields. Use only if 'prefix' key word is use in 'fields'.
+# This prefix is repeated so that it has the same length as the field name.
+prefix: ''
+
+# The suffix use for fields. Use only if 'suffix' key word is use in fields.
+# This suffix is repeated so that it has the same length as the field name.
+suffix: '-'  # With the field 'Parameters', this prefix give '----------' (10*'-')
+```
+
+Example of a config file with a **json file**:
+```json
+{
+  "description": "{description}\n",
+  "fields": "{prefix}\n{name}\n{suffix}\n{items}",
+  "items": "{name} : {type}\n\t{description}\n\t{default}",
+  "prefix": "",
+  "suffix": "-"
+}
+```
+
+### Command line
+
+To document all functions and class decorated with `to_document` decorator from `module_to_document.py`, use: `python -m pyDocStr ./module_to_document.py --config-formatter ./config.json`
 
 [colorama]: https://pypi.org/project/colorama/
