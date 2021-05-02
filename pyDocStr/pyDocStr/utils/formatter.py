@@ -136,16 +136,16 @@ class Formatter:
 
 	@staticmethod
 	def simple_format():
-	"""A staticmethod to get the default Formatter.
-	
-	Parameters
-	----------
-	None
-	
-	Returns
-	-------
-	Formatter
-	"""
+		"""A staticmethod to get the default Formatter.
+		
+		Parameters
+		----------
+		None
+		
+		Returns
+		-------
+		Formatter
+		"""
 		return Formatter()
 
 	@staticmethod
