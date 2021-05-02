@@ -1,0 +1,49 @@
+####################
+### Informations ###
+####################
+# This file is a config file example for custom formatters to format docstring.
+# You can use a yml/yaml file or a json file with the same keys.
+# This config file is built with the numpy formatter values.
+
+
+
+######################
+### Config example ###
+######################
+
+# The format for the description of a function or a class. The key word '{description}' is mandatory.
+description: "{description}\n"
+
+
+# The format of a field in docstring ('Parameters', 'Returns'...).
+fields: "{prefix}\n{name}\n{suffix}\n{items}"
+
+
+# The format of a item in a field (a parameter...).
+items: "{name} : {type}\n\t{description}\n\t{default}"
+
+
+# The prefix use for fields. Use only if 'prefix' key word is use in 'fields'.
+# This prefix is repeated so that it has the same length as the field name.
+prefix: ''
+
+# The suffix use for fields. Use only if 'suffix' key word is use in fields.
+# This suffix is repeated so that it has the same length as the field name.
+suffix: '-'  # With the field 'Parameters', this prefix give '----------' (10*'-')
+
+##################################################
+### Example of a docstring with this formatter ###
+##################################################
+#	"""{DESCRIPTION}
+#		
+#		Parameters
+#		----------
+#		arg1 : int
+#			{DESCRIPTION}
+#		OPTIONAL[arg2] : str
+#			Default: {DEFAULT}
+#		
+#		Returns
+#		-------
+#		None
+#	"""

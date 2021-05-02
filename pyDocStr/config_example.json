@@ -1,0 +1,7 @@
+{
+	"description": "{description}\n",
+	"fields": "{prefix}\n{name}\n{suffix}\n{items}",
+	"items": "{name} : {type}\n\t{description}\n\t{default}",
+	"prefix": "",
+	"suffix": "-"
+}
