@@ -4,8 +4,9 @@ try:
 	import yaml
 	yaml_imported = True
 except ModuleNotFoundError:
-	import json
 	yaml_imported = False
+finally:
+	import json
 
 
 class Formatter:
@@ -56,30 +57,31 @@ class Formatter:
 		return f"\n{base_tab}".join(docstring.split('\n')).rstrip('\t')
 
 	@staticmethod
-	def simple_format() -> Formatter:
+	def simple_format():
 		return Formatter()
 
 	@staticmethod
-	def numpy_format() -> Formatter:
+	def numpy_format():
 		return Formatter(suffix_field="-")
 
 	@staticmethod
-	def from_config(config_path: str) -> Formatter:
+	def from_config(config_path: str):
 		with open(config_path, 'r') as f:
-			if yaml_imported:
+			if yaml_imported and (config_path[-4:] == '.yml' or config_path[-5:] == '.yaml'):
 				configs = yaml.safe_load(f)
 			else:
 				configs = json.load(f)
 
+		
 		try:
-			formatter =  Formatter(
-										description_fmt=configs['description'],
-										field_fmt=configs['fields'],
-										items_fmt=configs['items'],
-										prefix_field=configs['prefix'],
-										suffix_field=configs['suffix']
-									)
+			kwargs = {
+				'description_fmt': configs['description'],
+				'field_fmt': configs['fields'],
+				'items_fmt': configs['items'],
+				'prefix_field': configs['prefix'],
+				'suffix_field': configs['suffix']
+			}
 		except KeyError as e:
 			raise e
-		return formatter
+		return Formatter(**{k: v for k, v in kwargs.items() if v is not None})
 
