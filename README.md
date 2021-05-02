@@ -21,6 +21,7 @@ A package to generate a complete documentation in your python files.
 
  * Optional:
  	* [colorama][colorama]: for color logs
+  * [yaml][yaml]: to read yaml file
 
 ## Installation
 
@@ -131,7 +132,7 @@ The configuration file must have the following 6 keywords:
 
 Example of a config file with a **yaml file**:
 
-```yaml
+```YAML
 # The format for the description of a function or a class. The key word '{description}' is mandatory.
 description: "{description}\n"
 
