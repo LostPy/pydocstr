@@ -3,8 +3,18 @@ A Decorator is used to indicate if the functions or class must be documented or 
 from inspect import getsource, getmembers, isfunction, ismethod, isclass, signature, _empty, isbuiltin
 
 
-#@to_document(description="A base class for objects to document.")
 class ObjectToDocument:
+	""".A base class for objects to document.
+	
+	Attributes
+	----------
+	obj : The object (function or class) to document.
+	name : str
+		The name of the object.
+	description : str
+		The description for the object.
+	"""
+
 	def __init__(self, func_or_class, description: str = ""):
 		self.obj = func_or_class
 		self.name = self.obj.__name__
@@ -20,15 +30,24 @@ class ObjectToDocument:
 		return self.obj(*args, **kwargs)
 
 
-#@to_document(description="A class to represent a function to document.")
 class FunctionToDocument(ObjectToDocument):
-	def __init__(self, func_, description: str = "",
-				name_return: str = "result", **kwargs):
+	"""A class to represent a function to document.
+	
+	Attributes
+	----------
+	parameters : Dict[str, Tuple[type, Any]]
+		A dictionary with all parameters of function and these types and default value.
+	returns : Dict[str, Tuple[type, _empty]]
+		A dictionnary with the value return and this type.
+	nb_base_tab : int
+		The number of indentation for this function.
+	"""
+
+	def __init__(self, func_, description: str = "", name_return: str = "result", **kwargs):
 		ObjectToDocument.__init__(self, func_, description)
 		sign = signature(self.obj)
 		self.parameters = {name: (param.annotation, param.default) for name, param in sign.parameters.items() if name != 'self'}
 		self.returns = {name_return: (sign.return_annotation, _empty)} if sign.return_annotation != _empty else {}
-		self.description_parameters = kwargs
 		del(sign)
 
 		source = getsource(func_)
@@ -36,8 +55,29 @@ class FunctionToDocument(ObjectToDocument):
 		del(source)
 
 
-#@to_document(description="A class to represent a class with this methods to documents.")
+@to_document(description="A class to represent a class with this methods to documents.")
 class ClassToDocument(ObjectToDocument):
+	"""A class to represent a function to document.
+	
+	Attributes
+	----------
+	attributes : Dict[str, Tuple[_empty, _empty]]
+		A dictionary with all attributes class of this class and these types and default value.
+	methods_to_document : List[FunctionToDocument]
+		A list with all methods to document.
+	public_methods : List[functions]
+		A list with all methods public methods.
+	protected_methods : List[functions]
+		A list with all methods protected methods.
+	nb_base_tab : int
+		The number of indentation for this class.
+
+	Protected methods
+	-----------------
+	_isfunction_or_isfunctiontodocument : bool
+		Return if an object is a function or a FunctionToDocument.
+	"""
+
 	def __init__(self, class_, description: str = "", **kwargs):
 		ObjectToDocument.__init__(self, class_, description)
 		self.methods_to_document = []
@@ -71,9 +111,18 @@ class ClassToDocument(ObjectToDocument):
 		del(source)
 		del(members)
 
-#	@to_document(description="Return if an object is a function or a FunctionToDocument.")
 	@staticmethod
 	def _isfunction_or_isfunctiontodocument(obj) -> bool:
+		"""Return if an object is a function or a FunctionToDocument.
+		
+		Parameters
+		----------
+		obj : object to test
+		
+		Returns
+		-------
+		True if obj is a function/method or a FunctionToDocument
+		"""
 		return isfunction(obj) or isinstance(obj, FunctionToDocument)
 
 
