@@ -167,3 +167,4 @@ Example of a config file with a **json file**:
 To document all functions and class decorated with `to_document` decorator from `module_to_document.py`, use: `python -m pyDocStr ./module_to_document.py --config-formatter ./config.json`
 
 [colorama]: https://pypi.org/project/colorama/
+[yaml]: https://pypi.org/project/PyYAML/
