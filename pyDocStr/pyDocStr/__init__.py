@@ -19,6 +19,7 @@ _logger.setLevel(_logging.DEBUG)
 from .build_docstrings import create_docstrings_from_file, create_docstrings_from_folder
 
 
+#@to_document(description="A function to set the level logger.")
 def set_level_logger(levelname: str):
 	levels = {
 		'debug': _logging.DEBUG,

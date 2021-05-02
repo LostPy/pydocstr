@@ -3,6 +3,7 @@ A Decorator is used to indicate if the functions or class must be documented or 
 from inspect import getsource, getmembers, isfunction, ismethod, isclass, signature, _empty, isbuiltin
 
 
+#@to_document(description="A base class for objects to document.")
 class ObjectToDocument:
 	def __init__(self, func_or_class, description: str = ""):
 		self.obj = func_or_class
@@ -19,6 +20,7 @@ class ObjectToDocument:
 		return self.obj(*args, **kwargs)
 
 
+#@to_document(description="A class to represent a function to document.")
 class FunctionToDocument(ObjectToDocument):
 	def __init__(self, func_, description: str = "",
 				name_return: str = "result", **kwargs):
@@ -34,6 +36,7 @@ class FunctionToDocument(ObjectToDocument):
 		del(source)
 
 
+#@to_document(description="A class to represent a class with this methods to documents.")
 class ClassToDocument(ObjectToDocument):
 	def __init__(self, class_, description: str = "", **kwargs):
 		ObjectToDocument.__init__(self, class_, description)
@@ -41,8 +44,9 @@ class ClassToDocument(ObjectToDocument):
 		self.attributes = {name: (_empty, _empty) for name in dir(class_) if not name.startswith('_')}
 
 		self.public_methods, self.protected_methods = {}, {}
-		members = [member for member in getmembers(class_, predicate=self.isfunction_or_isfunctiontodocument) if not member[0].startswith(('__'))]
+		members = [member for member in getmembers(class_, predicate=self._isfunction_or_isfunctiontodocument) if not member[0].startswith(('__'))]
 		for name, method in members:
+			# Create the list of methods, attributes and methods to document
 			if isinstance(method, FunctionToDocument):
 				type_default = (signature(method.obj).return_annotation, _empty)
 				self.methods_to_document.append(method)
@@ -55,8 +59,10 @@ class ClassToDocument(ObjectToDocument):
 				self.protected_methods[name] = type_default
 
 		if len(members) > 0:
+			# If there is 1 method or more, we use this method to count the number of indentation
 			source = getsource(members[0][1].obj if isinstance(members[0][1], FunctionToDocument) else members[0][1])
 		else:
+			# Else, we use the __init__ methods
 			try:
 				source = getsource(class_.__init__)
 			except TypeError:  # If __init__ is not defined
@@ -65,12 +71,15 @@ class ClassToDocument(ObjectToDocument):
 		del(source)
 		del(members)
 
+#	@to_document(description="Return if an object is a function or a FunctionToDocument.")
 	@staticmethod
-	def isfunction_or_isfunctiontodocument(obj):
+	def _isfunction_or_isfunctiontodocument(obj) -> bool:
 		return isfunction(obj) or isinstance(obj, FunctionToDocument)
 
 
 def to_document(description: str = "", **kwargs):
+	# A decorator to transform a function or a class in a FunctionToDocument or ClassToDocument.
+	# If object is not a function and is not a class: return the object
 	def decorator(obj):
 		if isfunction(obj) or ismethod(obj):
 			return FunctionToDocument(obj, description, **kwargs)

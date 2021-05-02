@@ -13,15 +13,15 @@ def get_function_positions(func_name: str, source_code: str) -> tuple:
 	
 	Parameters
 	----------
-		func_name : str
-			The function name
-		source_code : str
-			The source code
+	func_name : str
+		The function name
+	source_code : str
+		The source code
 	
 	Returns
 	-------
-		pos : tuple
-			The start and end positions of the class
+	pos : tuple
+		The start and end positions of the class
 	"""
 	_logger.debug(f"get the function positions of '{func_name}'...")
 	r = r'def\s+{name}\s*\(.*?\)\s*[-, >]*[a-z, A-Z, \[, \], \,]*\:'.format(name=func_name)
@@ -35,15 +35,15 @@ def get_class_positions(class_name: str, source_code: str) -> tuple:
 	
 	Parameters
 	----------
-		class_name : str
-			The class name
-		source_code : str
-			The source code
+	class_name : str
+		The class name
+	source_code : str
+		The source code
 	
 	Returns
 	-------
-		pos : tuple
-			The start and end positions of the class
+	pos : tuple
+		The start and end positions of the class
 	"""
 	_logger.debug(f"get the class positions of '{class_name}'...")
 	r = r'class\s+{name}.*?\s*:'.format(name=class_name)
@@ -55,15 +55,15 @@ def get_docstring_start(end_signature: int, source_code: str) -> int:
 	
 	Parameters
 	----------
-		end_signature : int
-			The end position of the signature of function
-		source_code : str
-			The source code
+	end_signature : int
+		The end position of the signature of function
+	source_code : str
+		The source code
 	
 	Returns
 	-------
-		result : int
-			The start position of docstring
+	result : int
+		The start position of docstring
 	"""
 	return source_code.find('\n', end_signature) + 1
 
@@ -73,17 +73,17 @@ def write_docstring(docstring: str, source_code: str, start: int) -> str:
 	
 	Parameters
 	----------
-		docstring : str
-			The docstring to insert
-		source_code : str
-			The source code where add the docstring
-		start : int
-			The start position of docstring
+	docstring : str
+		The docstring to insert
+	source_code : str
+		The source code where add the docstring
+	start : int
+		The start position of docstring
 	
 	Returns
 	-------
-		source_code : str
-			The new source code with docstring
+	source_code : str
+		The new source code with docstring
 	"""
 	_logger.debug(f"Add a docstring to the source code...")
 	source_code = source_code[:start] + docstring + source_code[start:]
@@ -95,15 +95,15 @@ def build_function_docstring(func_to_doc: FunctionToDocument, formatter: Formatt
 	
 	Parameters
 	----------
-		func_to_doc : FunctionToDocument
-			The function to document
-		formatter : Formatter
-			The formatter to use
+	func_to_doc : FunctionToDocument
+		The function to document
+	formatter : Formatter
+		The formatter to use
 	
 	Returns
 	-------
-		docstring : str
-			The docstring for this function
+	docstring : str
+		The docstring for this function
 	"""
 	_logger.debug(f"Build function docstring for '{func_to_doc.name}'...")
 	return formatter.format_docstring(nb_base_tab=func_to_doc.nb_base_tab,
@@ -119,15 +119,15 @@ def build_class_docstring(class_to_doc: ClassToDocument, formatter: Formatter) -
 	
 	Parameters
 	----------
-		class_to_doc : ClassToDocument
-			The class to document
-		formatter : Formatter
-			The formatter to use
+	class_to_doc : ClassToDocument
+		The class to document
+	formatter : Formatter
+		The formatter to use
 	
 	Returns
 	-------
-		docstring : str
-			The docstring for this class
+	docstring : str
+		The docstring for this class
 	"""
 	_logger.debug(f"Build class docstring for '{class_to_doc.name}'...")
 	return formatter.format_docstring(nb_base_tab=class_to_doc.nb_base_tab,
@@ -144,16 +144,16 @@ def _remove_decorators(source_code: str, decorator_name: str = "to_document") ->
 	
 	Parameters
 	----------
-		source_code : str
-			The source code
-		OPTIONNAL[decorator_name] : str
-			The name of decorator to remove
-			Default: "to_document"
+	source_code : str
+		The source code
+	OPTIONNAL[decorator_name] : str
+		The name of decorator to remove
+		Default: "to_document"
 	
 	Returns
 	-------
-		source_code : str
-			The new source code without decorator 'decorator_name'
+	source_code : str
+		The new source code without decorator 'decorator_name'
 	"""
 	_logger.info(f"Removing decorators '{decorator_name}'...")
 	r = r"\t*?@{decorator_name}\(.*?\).*?\n".format(decorator_name=decorator_name)
@@ -165,17 +165,17 @@ def create_functions_docstrings(list_functions: list, source_code: str, formatte
 	
 	Parameters
 	----------
-		list_functions : list
-			The list of functions to document
-		source_code : str
-			The source code
-		formatter : Formatter
-			The formatter to use
+	list_functions : list
+		The list of functions to document
+	source_code : str
+		The source code
+	formatter : Formatter
+		The formatter to use
 	
 	Returns
 	-------
-		source_code : str
-			The new source code with docstrings
+	source_code : str
+		The new source code with docstrings
 	"""
 	_logger.info("Create functions docstrings...")
 	for func in list_functions:
@@ -191,17 +191,17 @@ def create_class_docstrings(list_class: list, source_code: str, formatter: Forma
 	
 	Parameters
 	----------
-		list_class : list
-			The list of class to document
-		source_code : str
-			The source code
-		formatter : Formatter
-			The formatter to use
-	
+	list_class : list
+		The list of class to document
+	source_code : str
+		The source code
+	formatter : Formatter
+		The formatter to use
+
 	Returns
 	-------
-		source_code : str
-			The source code with news docstrings
+	source_code : str
+		The source code with news docstrings
 	"""
 	_logger.info("Create class docstrings...")
 	for class_ in list_class:
@@ -218,15 +218,15 @@ def _get_members_to_document(module):
 	
 	Parameters
 	----------
-		module : Module
-			The module where get functions and class to document.
+	module : Module
+		The module where get functions and class to document.
 	
 	Returns
 	-------
-		list_func  : List[FunctionToDocument]
-			The list of functions to document
-		list_class : List[ClassToDocument]
-			The list of class to document
+	list_func  : List[FunctionToDocument]
+		The list of functions to document
+	list_class : List[ClassToDocument]
+		The list of class to document
 	"""
 	_logger.info(f"Get all functions and class to documented from module `{module.__name__}`")
 	list_func, list_class = [], []
@@ -246,21 +246,21 @@ def create_docstrings_from_file(path: str, formatter: Formatter = Formatter.simp
 	
 	Parameters
 	----------
-		path : str
-			The path of python file to document.
-		OPTIONNAL[formatter] : Formatter
-			The formatter to use.
-			Default: The 'simple' formatter. Get with `pyDocStr.utils.Formatter.simple_format()`
-		OPTIONNAL[new_path] : str
-			The new python file path where the source code with docstrings must be saved. If None, the old file is overwritten.
-			Default: None
-		OPTIONNAL[remove_decorator] : bool
-			If True, decorators 'to_document' specify with 'decorator_name' argument are removed.
-			Default: True
-		OPTIONNAL[decorator_name] : str
-			The decorator name use for 'to_document'
-			Default: to_document
-	
+	path : str
+		The path of python file to document.
+	OPTIONNAL[formatter] : Formatter
+		The formatter to use.
+		Default: The 'simple' formatter. Get with `pyDocStr.utils.Formatter.simple_format()`
+	OPTIONNAL[new_path] : str
+		The new python file path where the source code with docstrings must be saved. If None, the old file is overwritten.
+		Default: None
+	OPTIONNAL[remove_decorator] : bool
+		If True, decorators 'to_document' specify with 'decorator_name' argument are removed.
+		Default: True
+	OPTIONNAL[decorator_name] : str
+		The decorator name use for 'to_document'
+		Default: to_document
+
 	Returns
 	-------
 	None
@@ -296,24 +296,24 @@ def create_docstrings_from_folder(folderpath: str, formatter: Formatter = Format
 	
 	Parameters
 	----------
-		folderpath : str
-			The path of folder to document.
-		OPTIONNAL[formatter] : Formatter
-			The formatter to use.
-			Default: The 'simple' formatter. Get with `pyDocStr.utils.Formatter.simple_format()`
-		OPTIONNAL[new_folderpath] : str
-			The path of folder where the news files must be save. If None, the files are overwritten
-			Default: None
-		OPTIONNAL[subfolders] : bool
-			If True, all files of subfolders are documented.
-			Default: False
-		OPTIONNAL[remove_decorator] : bool
-			If True, decorators 'to_document' specify with 'decorator_name' argument are removed.
-			Default: True
-		OPTIONNAL[decorator_name] : str
-			The decorator name use for 'to_document'
-			Default: to_document
-	
+	folderpath : str
+		The path of folder to document.
+	OPTIONNAL[formatter] : Formatter
+		The formatter to use.
+		Default: The 'simple' formatter. Get with `pyDocStr.utils.Formatter.simple_format()`
+	OPTIONNAL[new_folderpath] : str
+		The path of folder where the news files must be save. If None, the files are overwritten
+		Default: None
+	OPTIONNAL[subfolders] : bool
+		If True, all files of subfolders are documented.
+		Default: False
+	OPTIONNAL[remove_decorator] : bool
+		If True, decorators 'to_document' specify with 'decorator_name' argument are removed.
+		Default: True
+	OPTIONNAL[decorator_name] : str
+		The decorator name use for 'to_document'
+		Default: to_document
+
 	Returns
 	-------
 	None
