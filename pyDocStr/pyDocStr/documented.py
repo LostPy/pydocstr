@@ -55,7 +55,6 @@ class FunctionToDocument(ObjectToDocument):
 		del(source)
 
 
-@to_document(description="A class to represent a class with this methods to documents.")
 class ClassToDocument(ObjectToDocument):
 	"""A class to represent a function to document.
 	
