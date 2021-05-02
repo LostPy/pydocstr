@@ -34,7 +34,7 @@ class UneClasse:
 		
 		Parameters
 		----------
-		OPTIONNAL[arg1] : int
+		OPTIONAL[arg1] : int
 			{DESCRIPTION}
 			Default: 3
 		
@@ -101,10 +101,10 @@ def default_args_example(a, b=3, c: str = "Hello World"):
 	----------
 	a : {TYPE}
 		{DESCRIPTION}
-	OPTIONNAL[b] : {TYPE}
+	OPTIONAL[b] : {TYPE}
 		{DESCRIPTION}
 		Default: 3
-	OPTIONNAL[c] : str
+	OPTIONAL[c] : str
 		{DESCRIPTION}
 		Default: Hello World
 	
@@ -159,10 +159,10 @@ def function_with_multi_lines(a, b, c, d, e, f, g: int, h: str,
 		{DESCRIPTION}
 	k : tuple
 		{DESCRIPTION}
-	OPTIONNAL[l] : int
+	OPTIONAL[l] : int
 		{DESCRIPTION}
 		Default: 3
-	OPTIONNAL[m] : int
+	OPTIONAL[m] : int
 		{DESCRIPTION}
 		Default: 2
 	

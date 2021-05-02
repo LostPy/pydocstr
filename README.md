@@ -15,7 +15,7 @@ A package to generate a complete documentation in your python files.
 
  * Author: LostPy
  * Date: 2021-04-25
- * Version: 1.0.3 (2021-05-02)
+ * Version: 1.0.4 (2021-05-02)
 
 ## Requirements
 

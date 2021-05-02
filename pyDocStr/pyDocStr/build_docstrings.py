@@ -146,7 +146,7 @@ def _remove_decorators(source_code: str, decorator_name: str = "to_document") ->
 	----------
 	source_code : str
 		The source code
-	OPTIONNAL[decorator_name] : str
+	OPTIONAL[decorator_name] : str
 		The name of decorator to remove
 		Default: "to_document"
 	
@@ -248,16 +248,16 @@ def create_docstrings_from_file(path: str, formatter: Formatter = Formatter.simp
 	----------
 	path : str
 		The path of python file to document.
-	OPTIONNAL[formatter] : Formatter
+	OPTIONAL[formatter] : Formatter
 		The formatter to use.
 		Default: The 'simple' formatter. Get with `pyDocStr.utils.Formatter.simple_format()`
-	OPTIONNAL[new_path] : str
+	OPTIONAL[new_path] : str
 		The new python file path where the source code with docstrings must be saved. If None, the old file is overwritten.
 		Default: None
-	OPTIONNAL[remove_decorator] : bool
+	OPTIONAL[remove_decorator] : bool
 		If True, decorators 'to_document' specify with 'decorator_name' argument are removed.
 		Default: True
-	OPTIONNAL[decorator_name] : str
+	OPTIONAL[decorator_name] : str
 		The decorator name use for 'to_document'
 		Default: to_document
 
@@ -298,19 +298,19 @@ def create_docstrings_from_folder(folderpath: str, formatter: Formatter = Format
 	----------
 	folderpath : str
 		The path of folder to document.
-	OPTIONNAL[formatter] : Formatter
+	OPTIONAL[formatter] : Formatter
 		The formatter to use.
 		Default: The 'simple' formatter. Get with `pyDocStr.utils.Formatter.simple_format()`
-	OPTIONNAL[new_folderpath] : str
+	OPTIONAL[new_folderpath] : str
 		The path of folder where the news files must be save. If None, the files are overwritten
 		Default: None
-	OPTIONNAL[subfolders] : bool
+	OPTIONAL[subfolders] : bool
 		If True, all files of subfolders are documented.
 		Default: False
-	OPTIONNAL[remove_decorator] : bool
+	OPTIONAL[remove_decorator] : bool
 		If True, decorators 'to_document' specify with 'decorator_name' argument are removed.
 		Default: True
-	OPTIONNAL[decorator_name] : str
+	OPTIONAL[decorator_name] : str
 		The decorator name use for 'to_document'
 		Default: to_document
 
