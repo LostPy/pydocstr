@@ -56,15 +56,15 @@ class Formatter:
 		return f"\n{base_tab}".join(docstring.split('\n')).rstrip('\t')
 
 	@staticmethod
-	def simple_format() -> Formatter:
+	def simple_format():
 		return Formatter()
 
 	@staticmethod
-	def numpy_format() -> Formatter:
+	def numpy_format():
 		return Formatter(suffix_field="-")
 
 	@staticmethod
-	def from_config(config_path: str) -> Formatter:
+	def from_config(config_path: str):
 		with open(config_path, 'r') as f:
 			if yaml_imported:
 				configs = yaml.safe_load(f)
