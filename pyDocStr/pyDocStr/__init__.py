@@ -29,3 +29,4 @@ def set_level_logger(levelname: str):
 	}
 
 	_logger.setLevel(levels[levelname])
+
