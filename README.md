@@ -20,8 +20,8 @@ A package to generate a complete documentation in your python files.
 ## Requirements
 
  * Optional:
- 	* [colorama][colorama]: for color logs
-  * [yaml][yaml]: to read yaml file
+ 	 * [colorama][colorama]: for color logs
+   * [yaml][yaml]: to read yaml file
 
 ## Installation
 
