@@ -40,13 +40,13 @@ class ColoredFormatter(logging.Formatter):
         ----------
         fmt : str
             The format passed to the logger
-        OPTIONNAL[level_colored] : bool
+        OPTIONAL[level_colored] : bool
             Specify if the level must be colored.
             Default: True
-        OPTIONNAL[fg_colors] : Dict[str, str], format: {levelname: colorama.Fore constant}
+        OPTIONAL[fg_colors] : Dict[str, str], format: {levelname: colorama.Fore constant}
             A dictionary with the color constant for each levelname
             Default: DEFAULT_FG_COLORS
-        OPTIONNAL[styles] : Dict[str, str], format: {levelname: colorama.Style constant}
+        OPTIONAL[styles] : Dict[str, str], format: {levelname: colorama.Style constant}
             A dictionary with the style for each levelname
             Default: DEFAULT_STYLES
         """

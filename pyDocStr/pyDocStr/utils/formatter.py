@@ -71,7 +71,7 @@ class Formatter:
 		"""
 		items_string = []
 		for name, value in items_.items():
-			name = name if value[1] == _empty else f'OPTIONNAL[{name}]'
+			name = name if value[1] == _empty else f'OPTIONAL[{name}]'
 			if value[0] == _empty:
 				type_ = '{TYPE}'
 			elif isinstance(value[0], type):
@@ -89,7 +89,7 @@ class Formatter:
 		
 		Parameters
 		----------
-		OPTIONNAL[fields] : dict
+		OPTIONAL[fields] : dict
 			Fields of docstring to format.
 			It's a dictionary with name of fields in key and in value a dictionary of items.
 			Default: {}
@@ -115,13 +115,13 @@ class Formatter:
 		
 		Parameters
 		----------
-		OPTIONNAL[nb_base_tab] : int
+		OPTIONAL[nb_base_tab] : int
 			The number of indentation of the signature function/class
 			Default: 0
-		OPTIONNAL[description] : str
-			The description of the docstriong
-			Default: {DESCRIPTION}
-		OPTIONNAL[fields] : dict
+		OPTIONAL[description] : str
+			The description of the docstring
+			Default: "{DESCRIPTION}"
+		OPTIONAL[fields] : dict
 			Fields to format. It's a dictionary with name of fields in key and in value a dictionary of items
 			Default: {}
 		
