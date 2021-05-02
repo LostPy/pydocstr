@@ -88,12 +88,15 @@ if __name__ == "__main__":
 			except KeyError:
 				pyDocStr._logger.error("KeyError was raised in configuration file."\
 						" The file must contain the following keywords: 'description', 'fields', 'items', 'prefix', 'suffix'.")
+				pyDocStr._logger.debug(traceback.format_exc())
 				sys.exit(1)
 			except json.JSONDecodeError:
 				pyDocStr._logger.error("A JSONDecodeError was raised. Check the config file. json module can only read json files.")
+				pyDocStr._logger.debug(traceback.format_exc())
 				sys.exit(1)
 			except YAMLError:
 				pyDocStr._logger.error("A YAMLError was raised. Check the config file. yaml module can read json and yaml (yml) files.")
+				pyDocStr._logger.debug(traceback.format_exc())
 				sys.exit(1)
 			except Exception as e:
 				pyDocStr._logger.error("An exception was raised while reading the configuration file. Check the config file.")
