@@ -2,6 +2,7 @@
 import os
 from inspect import getsource, getmembers, isfunction, signature, _empty
 import re
+from distutils.dir_util import copy_tree
 
 from .documented import FunctionToDocument, ClassToDocument
 from .utils import Formatter, load_module
@@ -321,15 +322,14 @@ def create_docstrings_from_folder(folderpath: str, formatter: Formatter = Format
 	_logger.info(f"Start to document the folder: {folderpath}")
 	_logger.info(f"Document subfolders: {subfolders}")
 	_logger.debug(f"List directories and file: {os.listdir(folderpath)}")
+
+	if new_folderpath is not None:
+		copy_tree(folderpath, new_folderpath)
+
 	for elmt in os.listdir(folderpath):
 		path_elmt = os.path.join(folderpath, elmt)
 		print(path_elmt, os.path.isfile(path_elmt), path_elmt[-3:] == '.py')
-		if new_folderpath is not None:
-			if not os.path.exists(new_folderpath):
-				os.mkdir(new_folderpath)
-			new_path_elmt = os.path.join(new_folderpath, elmt)
-		else:
-			new_path_elmt = None
+		new_path_elmt = None if new_folderpath is None else os.path.join(new_folderpath, elmt)
 
 		if os.path.isfile(path_elmt) and path_elmt[-3:] == '.py':
 			create_docstrings_from_file(path_elmt, formatter,

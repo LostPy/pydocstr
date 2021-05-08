@@ -106,7 +106,7 @@ if __name__ == "__main__":
 			pyDocStr._logger.error(f'The config file was not found: {args.config_formatter}')
 			sys.exit(1)
 
-	pyDocStr._logger.debug("debug mode - informations on the parameters")
+	pyDocStr._logger.debug("debug mode - information on parameters")
 	pyDocStr._logger.debug("-"*20)
 	pyDocStr._logger.debug(f'current path: {os.getcwd()}')
 	pyDocStr._logger.debug(f'file path: {args.file}')

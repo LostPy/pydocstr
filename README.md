@@ -114,7 +114,7 @@ optional arguments:
 
 The config file can be a json or a yaml file if the yaml module is installed.
 
-> ℹ️ **Note:** To install the yaml module, use: `python install pyyaml`
+> ℹ️ **Note:** To install the yaml module, use: `pip install pyyaml`
 
 The configuration file must have the following 6 keywords:
 
