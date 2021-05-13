@@ -387,15 +387,10 @@ def create_docstrings_from_package(path_or_package, formatter: Formatter = Forma
 	_logger.info(f"Document subpackages: {subpackages}")
 
 	# get the list of modules (getmembers & ismodule) from package (dirname(package) == commonpath([package, module]))
-	modules = [member for name, member in getmembers(package) if ismodule(member)]
-	for module in modules:
-		print(module.__name__, module.__file__)
 	list_modules = [member for name, member in getmembers(package) if ismodule(member) and _modules_utils._is_subpackage_of(member, package)]
 	_logger.debug(f"List modules from package {package.__name__}:\n{[module.__name__ for module in list_modules]}")
-	for module in list_modules:
-		print(module.__name__, module.__file__)
 	if new_package_path is not None and not os.path.exists(new_package_path):
-		copy_tree(path, new_package_path)
+		copy_tree(os.path.dirname(path), new_package_path)
 
 	# create docstrings in the __init__ of package
 	create_docstrings_from_module(package, formatter,

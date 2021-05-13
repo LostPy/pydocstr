@@ -78,15 +78,19 @@ import {name}
 
 pyDocStr.build_docstrings_package(
 									{name},
-									formatter="{formatter}",
-									config_formatter="{formatter}",
-									new_package_path="{new_path}",
+									formatter={formatter},
+									config_formatter={config_formatter},
+									new_package_path={new_path},
 									subpackages={subpackages},
 									remove_decorator={remove_decorator},
-									decorator_name="{decorator_name}",
-									level_logger="{level_logger}"
+									decorator_name={decorator_name},
+									level_logger={level_logger}
 								)
 """
+
+
+def _get_str(str_: str) -> str:
+	return "\"" + str_ + "\""
 
 
 if __name__ == "__main__":
@@ -146,10 +150,15 @@ if __name__ == "__main__":
 			package = args.package.replace('\\', '/').rstrip('/')
 			package_name = package.split('/')[-1]
 			code = get_code_to_document_package()
-			code = code.format(name=package_name, formatter=args.formatter, new_path=args.output,
-						subpackages=not args.no_sub, decorator_name=args.decorator_name,
-						level_logger=args.level_logger, remove_decorator=None,
-						config_formatter=args.config_formatter)
+			code = code.format(
+				name=package_name,
+				formatter=_get_str(args.formatter),
+				new_path=_get_str(args.output) if args.output is not None else None,
+				subpackages=not args.no_sub,
+				decorator_name=_get_str(args.decorator_name),
+				level_logger=_get_str(args.level_logger),
+				remove_decorator=None,
+				config_formatter=_get_str(args.config_formatter) if args.config_formatter is not None else None)
 
 			name_script_to_document = f'script_to_document_{package_name}.py'
 			path_script_to_document = os.path.join(os.path.dirname(package), name_script_to_document)
