@@ -15,7 +15,7 @@ A package to generate a complete documentation in your python files.
 
  * Author: LostPy
  * Date: 2021-04-25
- * Version: 1.0.4 (2021-05-02)
+ * Version: 1.0.5 (2021-05-13)
 
 ## Requirements
 
@@ -68,7 +68,8 @@ If you wan't documented the subfolders, use: `python -m pyDocStr -d path/of/your
 |:--:|:------:|-----------|:---:|:-----:|
 |`file`|✅|The path of python file to document (If `--directory` is not used.|A path (str)|`None`|
 |`--directory`|✅|The path of a folder to document|A path (str)|`None`|
-|`--no-subdirs`|✅|Specifies that sub-directories should not be documented|||
+|`--package`|✅|The path of a package to document|A path (str)|`None`|
+|`--no-sub`|✅|Specifies that sub-directories or sub-packages should not be documented|||
 |`--decorator-name`|✅|To specify the decorator name use for `to_document` decorator. It's used to remove decorators `to_document`.|A str|`to_document`|
 |`--output`|✅|If a file is specified, this is the path where the new source code should be saved. If directory option is specified, must be the path of folder where the news source code should be saved.|A path (str)|The new source code is saved in the old file.|
 |`--formatter`|✅|The formatter to use for the docstring format.|`simple` or `numpy`|`simple`|
@@ -83,9 +84,11 @@ If you wan't documented the subfolders, use: `python -m pyDocStr -d path/of/your
 
 The help message
 ```
-usage: pyDocStr [-h] [-d [DIRECTORY]] [--no-subdirs] [--decorator-name [DECORATOR_NAME]] [-o [OUTPUT]] [--formatter {simple,numpy}] [--config-formatter [CONFIG_FORMATTER]]
-                   [--level-logger {debug,info,warning,error}]
-                   [file]
+usage:  [-h] [-d [DIRECTORY]] [-p [PACKAGE]] [--no-sub] [--decorator-name [DECORATOR_NAME]] [-o [OUTPUT]] [--formatter {simple,numpy}] [--config-formatter [CONFIG_FORMATTER]]
+        [--level-logger {debug,info,warning,error}]
+        [file]
+
+A package to generate a complete documentation in your python files.
 
 positional arguments:
   file                  path of python file to document.
@@ -94,7 +97,9 @@ optional arguments:
   -h, --help            show this help message and exit
   -d [DIRECTORY], --directory [DIRECTORY]
                         path of a directory to document.
-  --no-subdirs          If you wan't document subdirectories of directory passed to --directory argument
+  -p [PACKAGE], --package [PACKAGE]
+                        path of a package to document.
+  --no-sub              If you wan't document subdirectories of directory passed to --directory argument or subpackage of package passed to --package argument.
   --decorator-name [DECORATOR_NAME]
                         The decorator name use for 'to_document' decorator.
   -o [OUTPUT], --output [OUTPUT]
@@ -105,7 +110,6 @@ optional arguments:
                         path of a config file for formatter.
   --level-logger {debug,info,warning,error}
                         The logger level.
-
 ```
 
 ## Use with a configuration file

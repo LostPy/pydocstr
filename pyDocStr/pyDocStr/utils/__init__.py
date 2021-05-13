@@ -1,5 +1,5 @@
 from .formatter import Formatter
-from . import load_module
+from . import _modules_utils
 
 try:
 	from . import coloredLoggerFormatter

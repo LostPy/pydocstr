@@ -1,10 +1,12 @@
 """Module to generate Functions documentation string."""
 import os
+import traceback
 from inspect import getsource, getmembers, isfunction, signature, _empty, ismodule
+from distutils.dir_util import copy_tree, DistutilsFileError
 import re
 
 from .documented import FunctionToDocument, ClassToDocument
-from .utils import Formatter, load_module
+from .utils import Formatter, _modules_utils
 from . import _logger
 
 
@@ -231,9 +233,9 @@ def _get_members_to_document(module):
 	_logger.info(f"Get all functions and class to documented from module `{module.__name__}`")
 	list_func, list_class = [], []
 	for member in getmembers(module):
-		if isinstance(member[1], FunctionToDocument):
+		if isinstance(member[1], FunctionToDocument) and member[1].obj.__module__ == module.__name__:
 			list_func.append(member[1])
-		elif isinstance(member[1], ClassToDocument):
+		elif isinstance(member[1], ClassToDocument) and member[1].obj.__module__ == module.__name__:
 			list_class.append(member[1])
 	_logger.debug(f"list_func = {list_func}")
 	_logger.debug(f"list_class = {list_class}")
@@ -246,8 +248,8 @@ def _safe_import_module(path_or_module):
 		_logger.info(f"Import module from path: '{path_or_module}'...")
 		_logger.debug(f"path_or_module: {path_or_module}")
 		try:
-			return os.path.abspath(path_or_module), load_module._import_from_path(path_or_module)
-		except (ImportError, ModuleNotFoundError):	
+			return os.path.abspath(path_or_module), _modules_utils._import_from_path(path_or_module)
+		except ImportError:	
 			_logger.error(f"The module from path '{path_or_module}', was not founded or we can't import this module")
 			_logger.debug(traceback.format_exc())
 			return os.path.abspath(path_or_module), None
@@ -261,7 +263,7 @@ def _safe_import_module(path_or_module):
 	raise ValueError(f"'path_or_module' must be an instance of str or a module, not a {type(path_or_module)}")
 
 
-def create_docstrings_from_file(path_or_module, formatter: Formatter = Formatter.simple_format(), new_path: str = None,
+def create_docstrings_from_module(path_or_module, formatter: Formatter = Formatter.simple_format(), new_path: str = None,
 								remove_decorator: bool = True, decorator_name: str = 'to_document'):
 	"""Create all docstrings of functions and class decorated with 'to_document' decorator for a file.
 	
@@ -348,10 +350,64 @@ def create_docstrings_from_folder(folderpath: str, formatter: Formatter = Format
 			new_path_elmt = None
 
 		if os.path.isfile(path_elmt) and path_elmt[-3:] == '.py':
-			create_docstrings_from_file(path_elmt, formatter,
+			create_docstrings_from_module(path_elmt, formatter,
 										new_path=new_path_elmt,
 										remove_decorator=remove_decorator,
 										decorator_name=decorator_name)
 		elif subfolders and os.path.isdir(path_elmt):
 			create_docstrings_from_folder(path_elmt, formatter, new_path_elmt, subfolders, remove_decorator, decorator_name)
+
+
+#@to_document(description="Create docstrings for all python files in a package, for functions and class decorated with 'to_document' decorator.")
+def create_docstrings_from_package(path_or_package, formatter: Formatter = Formatter.simple_format(), new_package_path: str = None,
+									subpackages: bool = False, remove_decorator: bool = True, decorator_name: str = 'to_document'):
+	def new_path_module(module, package_path: str):
+		# return the new path for a module
+		if new_package_path is not None:
+			module_path = os.path.abspath(module.__file__)
+			base_path = os.path.commonpath([os.path.abspath(package_path), os.path.abspath(module.__file__)])
+			relative_path = module_path[len(base_path):].strip("/") if base_path != module_path else './'
+			if os.path.isdir(relative_path):  # if module is a package
+				relative_path = os.path.join(relative_path, '__init__.py')
+			return os.path.join(new_package_path, relative_path)
+		return None
+
+	if isinstance(path_or_package, str) and not os.path.exists(path_or_package):
+		_logger.error((f"The file {path_or_package} wasn't found"))
+		return
+
+	new_package_path = os.path.abspath(new_package_path)  # safe new path
+
+	path, package = _safe_import_module(path_or_package)
+	if package is None:
+		return
+
+	_logger.info(f"Start to document the package: {package.__name__}")
+	_logger.info(f"Document subpackages: {subpackages}")
+
+	# get the list of modules (getmembers & ismodule) from package (dirname(package) == commonpath([package, module]))
+	list_modules = [member for name, member in getmembers(package) if ismodule(member) and _modules_utils._is_subpackage_of(member, package)]
+	_logger.debug(f"List modules from package {package.__name__}:\n{[module.__name__ for module in list_modules]}")
+
+	if new_package_path is not None and not os.path.exists(new_package_path):
+		copy_tree(path, new_package_path)
+
+	# create docstrings in the __init__ of package
+	create_docstrings_from_module(package, formatter,
+									new_path=new_path_module(package, path),
+									remove_decorator=remove_decorator,
+									decorator_name=decorator_name)
+
+	for module in list_modules:
+		if subpackages and os.path.basename(module.__file__) == "__init__.py":
+			# document a subpackage
+			create_docstrings_from_package(module, formatter, os.path.dirname(new_path_module(module, path)), subpackages, remove_decorator, decorator_name)
+		elif os.path.basename(module.__file__) != "__init__.py":
+			# create docstrings in the modules found
+			create_docstrings_from_module(module, formatter,
+									new_path=new_path_module(module, path),
+									remove_decorator=remove_decorator,
+									decorator_name=decorator_name)
+
+	_logger.info(f"package {package.__name__} was documented with success!")
 
