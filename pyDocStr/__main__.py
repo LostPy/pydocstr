@@ -49,7 +49,7 @@ def create_parser():
 						help="path of a directory to document.",
 						type=str)
 	parser.add_argument('-p', '--package', nargs='?', default=None,
-						help="path of a package to document.",
+						help="path of a package to document. If this argument is used, a script to document is created.",
 						type=str)
 	parser.add_argument('--no-sub', action="store_true",
 						help="If you wan't document subdirectories of directory passed to --directory argument  or subpackage of package passed to --package argument.")
@@ -67,6 +67,26 @@ def create_parser():
 	parser.add_argument('--level-logger', choices=['debug', 'info', 'warning', 'error'],
 						default='info', help="The logger level.")
 	return parser
+
+
+def get_code_to_document_package():
+	return """
+import pyDocStr
+
+import {name}
+
+
+pyDocStr.build_docstrings_package(
+									{name},
+									formatter="{formatter}",
+									config_formatter="{formatter}",
+									new_package_path="{new_path}",
+									subpackages={subpackages},
+									remove_decorator={remove_decorator},
+									decorator_name="{decorator_name}",
+									level_logger="{level_logger}"
+								)
+"""
 
 
 if __name__ == "__main__":
@@ -122,8 +142,22 @@ if __name__ == "__main__":
 			if args.output is not None and os.path.isfile(args.output):
 				pyDocStr._logger.error(f"output argument must be a directory, not a file: '{args.output}'")
 				sys.exit(1)
-			pyDocStr.create_docstrings_from_package(args.package, formatter=formatter, new_package_path=args.output,
-													subpackages=not args.no_sub, decorator_name=args.decorator_name)
+
+			package = args.package.replace('\\', '/').rstrip('/')
+			package_name = package.split('/')[-1]
+			code = get_code_to_document_package()
+			code = code.format(name=package_name, formatter=args.formatter, new_path=args.output,
+						subpackages=not args.no_sub, decorator_name=args.decorator_name,
+						level_logger=args.level_logger, remove_decorator=None,
+						config_formatter=args.config_formatter)
+
+			name_script_to_document = f'script_to_document_{package_name}.py'
+			path_script_to_document = os.path.join(os.path.dirname(package), name_script_to_document)
+			with open(path_script_to_document, 'w') as f:
+				f.write(code)
+			pyDocStr._logger.warning(f"The script to document the package was created in '{path_script_to_document}'.")
+			pyDocStr._logger.warning(f"Run the command: `python {name_script_to_document}` to document the package.")
+
 	else:
 		parser.print_help()
 	sys.exit(0)	

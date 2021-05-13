@@ -15,7 +15,7 @@ A package to generate a complete documentation in your python files.
 
  * Author: LostPy
  * Date: 2021-04-25
- * Version: 1.0.5 (2021-05-13)
+ * Version: 1.0.6 (2021-05-13)
 
 ## Requirements
 
@@ -68,7 +68,7 @@ If you wan't documented the subfolders, use: `python -m pyDocStr -d path/of/your
 |:--:|:------:|-----------|:---:|:-----:|
 |`file`|✅|The path of python file to document (If `--directory` is not used.|A path (str)|`None`|
 |`--directory`|✅|The path of a folder to document|A path (str)|`None`|
-|`--package`|✅|The path of a package to document|A path (str)|`None`|
+|`--package`|✅|The path of a package to document. If this argument is used, a script to document the package is created. This script must be execute with Python 3 to document the package.|A path (str)|`None`|
 |`--no-sub`|✅|Specifies that sub-directories or sub-packages should not be documented|||
 |`--decorator-name`|✅|To specify the decorator name use for `to_document` decorator. It's used to remove decorators `to_document`.|A str|`to_document`|
 |`--output`|✅|If a file is specified, this is the path where the new source code should be saved. If directory option is specified, must be the path of folder where the news source code should be saved.|A path (str)|The new source code is saved in the old file.|
@@ -98,7 +98,7 @@ optional arguments:
   -d [DIRECTORY], --directory [DIRECTORY]
                         path of a directory to document.
   -p [PACKAGE], --package [PACKAGE]
-                        path of a package to document.
+                        path of a package to document. If this argument is used, a script to document the package is created.
   --no-sub              If you wan't document subdirectories of directory passed to --directory argument or subpackage of package passed to --package argument.
   --decorator-name [DECORATOR_NAME]
                         The decorator name use for 'to_document' decorator.

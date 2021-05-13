@@ -19,17 +19,14 @@ def _import_from_path(path: str):
 	"""
 	try:
 		path = path.replace('\\', '/').rstrip('/')
+		path = os.path.abspath(path)
 		module_name = path.split('/')[-1].split('.')[0]
-		if os.path.isfile(path):
-			# Import of module from path
-			spec = spec_from_file_location(module_name, path)
-			module = module_from_spec(spec)
-			spec.loader.exec_module(module)
-		else:  # If path is a folder (of a package)
-			path = os.path.dirname(path)
-			python_path = path.replace('/', '.')
-			python_path = python_path.strip('.')
-			module = import_module(module_name, package=python_path)
+		if os.path.isdir(path):  # if the path is the path of a package
+			path = os.path.join(path, '__init__.py')
+		spec = spec_from_file_location(module_name, path)
+		module = module_from_spec(spec)
+		print(module)
+		spec.loader.exec_module(module)
 
 		return module
 	except ImportError as e:

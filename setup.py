@@ -7,7 +7,7 @@ __doc__ = """A package and a parser to document pythons files quickly."""
 
 setup(
 	name='pyDocStr',
-	version='1.0.5',
+	version='1.0.6',
 	author='LostPy',
 	description="A package to document pythons files.",
 	long_description=__doc__,

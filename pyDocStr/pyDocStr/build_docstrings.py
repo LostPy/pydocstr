@@ -365,6 +365,7 @@ def create_docstrings_from_package(path_or_package, formatter: Formatter = Forma
 		# return the new path for a module
 		if new_package_path is not None:
 			module_path = os.path.abspath(module.__file__)
+			print(module.__name__, module_path)
 			base_path = os.path.commonpath([os.path.abspath(package_path), os.path.abspath(module.__file__)])
 			relative_path = module_path[len(base_path):].strip("/") if base_path != module_path else './'
 			if os.path.isdir(relative_path):  # if module is a package
@@ -386,9 +387,13 @@ def create_docstrings_from_package(path_or_package, formatter: Formatter = Forma
 	_logger.info(f"Document subpackages: {subpackages}")
 
 	# get the list of modules (getmembers & ismodule) from package (dirname(package) == commonpath([package, module]))
+	modules = [member for name, member in getmembers(package) if ismodule(member)]
+	for module in modules:
+		print(module.__name__, module.__file__)
 	list_modules = [member for name, member in getmembers(package) if ismodule(member) and _modules_utils._is_subpackage_of(member, package)]
 	_logger.debug(f"List modules from package {package.__name__}:\n{[module.__name__ for module in list_modules]}")
-
+	for module in list_modules:
+		print(module.__name__, module.__file__)
 	if new_package_path is not None and not os.path.exists(new_package_path):
 		copy_tree(path, new_package_path)
 
