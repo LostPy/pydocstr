@@ -1,6 +1,6 @@
 """Module to generate Functions documentation string."""
 import os
-from inspect import getsource, getmembers, isfunction, signature, _empty
+from inspect import getsource, getmembers, isfunction, signature, _empty, ismodule
 import re
 
 from .documented import FunctionToDocument, ClassToDocument
@@ -240,14 +240,35 @@ def _get_members_to_document(module):
 	return list_func, list_class
 
 
-def create_docstrings_from_file(path: str, formatter: Formatter = Formatter.simple_format(), new_path: str = None,
+#@to_document(description="A function to import a module and get this path.")
+def _safe_import_module(path_or_module):
+	if isinstance(path_or_module, str) and os.path.exists(path_or_module):
+		_logger.info(f"Import module from path: '{path_or_module}'...")
+		_logger.debug(f"path_or_module: {path_or_module}")
+		try:
+			return os.path.abspath(path_or_module), load_module._import_from_path(path_or_module)
+		except (ImportError, ModuleNotFoundError):	
+			_logger.error(f"The module from path '{path_or_module}', was not founded or we can't import this module")
+			_logger.debug(traceback.format_exc())
+			return os.path.abspath(path_or_module), None
+	elif isinstance(path_or_module, str):
+		_logger.error(f"The path {path_or_module} was not found")
+		return path_or_module, None
+
+	elif ismodule(path_or_module):
+		return os.path.abspath(path_or_module.__file__), path_or_module
+
+	raise ValueError(f"'path_or_module' must be an instance of str or a module, not a {type(path_or_module)}")
+
+
+def create_docstrings_from_file(path_or_module, formatter: Formatter = Formatter.simple_format(), new_path: str = None,
 								remove_decorator: bool = True, decorator_name: str = 'to_document'):
 	"""Create all docstrings of functions and class decorated with 'to_document' decorator for a file.
 	
 	Parameters
 	----------
-	path : str
-		The path of python file to document.
+	path_or_module : Union[str, module]
+		The path of python file to document or the module to document.
 	OPTIONAL[formatter] : Formatter
 		The formatter to use.
 		Default: The 'simple' formatter. Get with `pyDocStr.utils.Formatter.simple_format()`
@@ -265,14 +286,9 @@ def create_docstrings_from_file(path: str, formatter: Formatter = Formatter.simp
 	-------
 	None
 	"""
-	_logger.info(f"Start to document the file '{path}'")
-	_logger.info(f"Import module from path: '{path}'...")
-	try:
-		module = load_module._import_from_path(path)
-	except (ImportError, ModuleNotFoundError):	
-		_logger.error(f"The module from path '{path}', was not founded or we can't import this module")
-		return
+	path, module = _safe_import_module(path_or_module)
 
+	_logger.info(f"Start to document the module '{module.__name__}'")
 	list_func, list_class = _get_members_to_document(module)
 
 	_logger.info("Get source code...")
