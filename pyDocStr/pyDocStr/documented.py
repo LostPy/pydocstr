@@ -80,7 +80,7 @@ class ClassToDocument(ObjectToDocument):
 	def __init__(self, class_, description: str = "", **kwargs):
 		ObjectToDocument.__init__(self, class_, description)
 		self.methods_to_document = []
-		self.attributes = {name: (_empty, _empty) for name in dir(class_) if not name.startswith('_')}
+		self.attributes = {name: (_empty, _empty) for name, member in getmembers(class_, predicate=self._isattribute) if not name.startswith('__')}
 
 		self.public_methods, self.protected_methods = {}, {}
 		members = [member for member in getmembers(class_, predicate=self._isfunction_or_isfunctiontodocument) if not member[0].startswith(('__'))]
@@ -123,6 +123,10 @@ class ClassToDocument(ObjectToDocument):
 		True if obj is a function/method or a FunctionToDocument
 		"""
 		return isfunction(obj) or isinstance(obj, FunctionToDocument)
+
+	@staticmethod
+	def _isattribute(obj) -> bool:
+		return not (isfunction(obj) or isclass(obj) or ismethod(obj) or isinstance(obj, ObjectToDocument))
 
 
 def to_document(description: str = "", **kwargs):

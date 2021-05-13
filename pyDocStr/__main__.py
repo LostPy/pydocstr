@@ -157,7 +157,7 @@ if __name__ == "__main__":
 				subpackages=not args.no_sub,
 				decorator_name=_get_str(args.decorator_name),
 				level_logger=_get_str(args.level_logger),
-				remove_decorator=None,
+				remove_decorator=True,
 				config_formatter=_get_str(args.config_formatter) if args.config_formatter is not None else None)
 
 			name_script_to_document = f'script_to_document_{package_name}.py'
