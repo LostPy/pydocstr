@@ -33,5 +33,9 @@ def test_formatter():
 def functions_test():
 	create_docstrings_from_file("./module_to_document.py", new_path="./module_documented.py")
 
+def function_test2(module):
+	create_docstrings_from_file(module, new_path="./module_documented.py")
+
 if __name__ == "__main__":
-	functions_test()
+	import module_to_document
+	function_test2(module_to_document)

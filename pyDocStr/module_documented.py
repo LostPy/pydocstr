@@ -6,7 +6,7 @@ class UneClasse:
 	"""Une classe random
 	
 	Attributes
-	----------
+	
 	method1 : {TYPE}
 		{DESCRIPTION}
 	one : {TYPE}
@@ -17,12 +17,12 @@ class UneClasse:
 		{DESCRIPTION}
 	
 	Public methods
-	--------------
+	
 	method1 : {TYPE}
 		{DESCRIPTION}
 	
 	Protected methods
-	-----------------
+	
 	None
 	"""
 	one = 1
@@ -33,13 +33,13 @@ class UneClasse:
 		"""Une méthode random
 		
 		Parameters
-		----------
+		
 		OPTIONAL[arg1] : int
 			{DESCRIPTION}
 			Default: 3
 		
 		Returns
-		-------
+		
 		None
 		"""
 		print(arg1)
@@ -49,14 +49,14 @@ def additions(a: int, b: int) -> int:
 	"""Une fonction pour addionner deux nombres.
 	
 	Parameters
-	----------
+	
 	a : int
 		{DESCRIPTION}
 	b : int
 		{DESCRIPTION}
 	
 	Returns
-	-------
+	
 	result : int
 		{DESCRIPTION}
 	"""
@@ -67,12 +67,12 @@ def somme(list_: List[int]) -> int:
 	"""Une fonction qui somme une liste.
 	
 	Parameters
-	----------
+	
 	list_ : List[int]
 		{DESCRIPTION}
 	
 	Returns
-	-------
+	
 	result : int
 		{DESCRIPTION}
 	"""
@@ -83,11 +83,11 @@ def get_positions() -> Tuple[int, int]:
 	"""Une fonction sans arguments.
 	
 	Parameters
-	----------
+	
 	None
 	
 	Returns
-	-------
+	
 	result : Tuple[int, int]
 		{DESCRIPTION}
 	"""
@@ -98,7 +98,7 @@ def default_args_example(a, b=3, c: str = "Hello World"):
 	"""Une fonction avec des arguments ayant une valeur par défaults.
 	
 	Parameters
-	----------
+	
 	a : {TYPE}
 		{DESCRIPTION}
 	OPTIONAL[b] : {TYPE}
@@ -109,7 +109,7 @@ def default_args_example(a, b=3, c: str = "Hello World"):
 		Default: Hello World
 	
 	Returns
-	-------
+	
 	None
 	"""
 	print(a, b, c)
@@ -119,11 +119,11 @@ def other_function_to_document():
 	"""Une fonction sans typage ni argument.
 	
 	Parameters
-	----------
+	
 	None
 	
 	Returns
-	-------
+	
 	None
 	"""
 	def a_function_in_function():
@@ -136,7 +136,7 @@ def function_with_multi_lines(a, b, c, d, e, f, g: int, h: str,
 	"""Une fonction définie sur plusieurs lignes.
 	
 	Parameters
-	----------
+	
 	a : {TYPE}
 		{DESCRIPTION}
 	b : {TYPE}
@@ -167,7 +167,7 @@ def function_with_multi_lines(a, b, c, d, e, f, g: int, h: str,
 		Default: 2
 	
 	Returns
-	-------
+	
 	None
 	"""
 	pass
