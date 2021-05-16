@@ -3,7 +3,7 @@ import logging as _logging
 
 from . import utils
 from .documented import FunctionToDocument, ClassToDocument
-#from .documented import to_document
+from .documented import to_document
 
 
 if utils._colorama_imported:
