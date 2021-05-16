@@ -242,8 +242,21 @@ def _get_members_to_document(module):
 	return list_func, list_class
 
 
-#@to_document(description="A function to import a module and get this path.")
 def _safe_import_module(path_or_module):
+	"""A function to import a module and get this path.
+	
+	Parameters
+	----------
+	path_or_module : Union[str, module]
+		The module or the path of module to import.
+	
+	Returns
+	-------
+	path : str
+		The path of file where the module is defined
+	module : module
+		the module imported
+	"""
 	if isinstance(path_or_module, str) and os.path.exists(path_or_module):
 		_logger.info(f"Import module from path: '{path_or_module}'...")
 		_logger.debug(f"path_or_module: {path_or_module}")
@@ -308,22 +321,22 @@ def create_docstrings_from_module(path_or_module, formatter: Formatter = Formatt
 	_logger.info(f"The file '{path}' was documented with success.")
 
 
-def create_docstrings_from_folder(folderpath: str, formatter: Formatter = Formatter.simple_format(), new_folderpath: str = None,
-									subfolders: bool = False, remove_decorator: bool = True, decorator_name: str = 'to_document'):
-	"""Create docstrings for all python files in a folder, for functions and class decorated with 'to_document' decorator.
+def create_docstrings_from_package(path_or_package, formatter: Formatter = Formatter.simple_format(), new_package_path: str = None,
+									subpackages: bool = False, remove_decorator: bool = True, decorator_name: str = 'to_document'):
+	"""Create docstrings for all python files in a package, for functions and class decorated with 'to_document' decorator.
 	
 	Parameters
 	----------
-	folderpath : str
-		The path of folder to document.
+	path_or_package : Union[str, module]
+		The path of package to document or the package to document.
 	OPTIONAL[formatter] : Formatter
 		The formatter to use.
 		Default: The 'simple' formatter. Get with `pyDocStr.utils.Formatter.simple_format()`
-	OPTIONAL[new_folderpath] : str
+	OPTIONAL[new_package_path] : str
 		The path of folder where the news files must be save. If None, the files are overwritten
 		Default: None
-	OPTIONAL[subfolders] : bool
-		If True, all files of subfolders are documented.
+	OPTIONAL[subpackages] : bool
+		If True, all modules of subpackages are documented.
 		Default: False
 	OPTIONAL[remove_decorator] : bool
 		If True, decorators 'to_document' specify with 'decorator_name' argument are removed.
@@ -336,31 +349,6 @@ def create_docstrings_from_folder(folderpath: str, formatter: Formatter = Format
 	-------
 	None
 	"""
-	_logger.info(f"Start to document the folder: {folderpath}")
-	_logger.info(f"Document subfolders: {subfolders}")
-	_logger.debug(f"List directories and file: {os.listdir(folderpath)}")
-	for elmt in os.listdir(folderpath):
-		path_elmt = os.path.join(folderpath, elmt)
-		print(path_elmt, os.path.isfile(path_elmt), path_elmt[-3:] == '.py')
-		if new_folderpath is not None:
-			if not os.path.exists(new_folderpath):
-				os.mkdir(new_folderpath)
-			new_path_elmt = os.path.join(new_folderpath, elmt)
-		else:
-			new_path_elmt = None
-
-		if os.path.isfile(path_elmt) and path_elmt[-3:] == '.py':
-			create_docstrings_from_module(path_elmt, formatter,
-										new_path=new_path_elmt,
-										remove_decorator=remove_decorator,
-										decorator_name=decorator_name)
-		elif subfolders and os.path.isdir(path_elmt):
-			create_docstrings_from_folder(path_elmt, formatter, new_path_elmt, subfolders, remove_decorator, decorator_name)
-
-
-#@to_document(description="Create docstrings for all python files in a package, for functions and class decorated with 'to_document' decorator.")
-def create_docstrings_from_package(path_or_package, formatter: Formatter = Formatter.simple_format(), new_package_path: str = None,
-									subpackages: bool = False, remove_decorator: bool = True, decorator_name: str = 'to_document'):
 	def new_path_module(module, package_path: str):
 		# return the new path for a module
 		if new_package_path is not None:

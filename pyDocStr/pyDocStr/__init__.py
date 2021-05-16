@@ -3,7 +3,7 @@ import logging as _logging
 
 from . import utils
 from .documented import FunctionToDocument, ClassToDocument
-from .documented import to_document
+#from .documented import to_document
 
 
 if utils._colorama_imported:
@@ -17,7 +17,7 @@ _logger.addHandler(_handler)
 _logger.setLevel(_logging.DEBUG)
 
 
-from .build_docstrings import create_docstrings_from_module, create_docstrings_from_folder, create_docstrings_from_package
+from .build_docstrings import create_docstrings_from_module, create_docstrings_from_package
 
 
 def set_level_logger(levelname: str):
@@ -39,8 +39,19 @@ def set_level_logger(levelname: str):
 	_logger.setLevel(levels[levelname])
 
 
-#@to_document(description="A function to get a formatter with the name")
 def get_formatter(name: str):
+	"""A function to get an existing formatter with the name.
+
+	Parameters
+	----------
+	name : str
+		The name of formatter. Choices: 'simple', 'numpy'
+
+	Returns
+	-------
+	formatter : Formatter
+		The formatter instance.
+	"""
 	formatters = {
 		'simple': utils.Formatter.simple_format(),
 		'numpy': utils.Formatter.numpy_format()
@@ -49,6 +60,18 @@ def get_formatter(name: str):
 
 
 def _formatter_from_config_path(config_path: str):
+	"""Create a custom formatter with a config file.
+
+	Parameters
+	----------
+	config_path : str
+		The path of config file. This file must be a json file or a yaml file.
+
+	Returns
+	-------
+	formatter : Formatter
+		The formatter created.
+	"""
 	if os.path.exists(config_path):
 		try:
 			return utils.Formatter.from_config(config_path)
@@ -73,7 +96,6 @@ def _formatter_from_config_path(config_path: str):
 	return None
 
 
-#@to_document(description="A function to build docstrings for a package.\nThis function should be called in a main fille which import the package.")
 def build_docstrings_package(
 								package,
 								formatter = utils.Formatter.simple_format(),
@@ -84,6 +106,38 @@ def build_docstrings_package(
 								decorator_name: str = 'to_document',
 								level_logger: str = 'info',
 							):
+	"""Build all docstring for a package.
+
+	Parameters
+	----------
+	package : module
+		The package to document
+	OPTIONAL[formatter] : Union[str, Formatter]
+		The formatter name or the formatter to use. Use if config_formatter is not used.
+		Default: None
+	OPTIONAL[config_formatter] : str
+		The path of config file for the formatter. This file must be a json file or a yaml file.
+		Default: None
+	OPTIONAL[new_package_path] : str
+		The folder path where the package documented must be saved. If None, the package is overwritten.
+		Default: None
+	OPTIONAL[subpackages] : bool
+		If True, all subpackages are documented.
+		Default: False
+	OPTIONAL[remove_decorator] : bool
+		If True, the decorators 'to_document' are removed.
+		Default: True
+	OPTIONAL[decorator_name] : str
+		The name use for decorator 'to_document'.
+		Default: 'to_document'
+	OPTIONAL[level_logger] : str
+		The level of logger. Choices: 'debug', 'info', 'warning', 'error'
+		Default: 'info'
+
+	Returns
+	-------
+	None
+	"""
 
 	if config_formatter is None and isinstance(formatter, str):
 		formatter = get_formatter(formatter)
