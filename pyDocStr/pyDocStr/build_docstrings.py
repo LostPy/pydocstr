@@ -4,6 +4,7 @@ import traceback
 from inspect import getsource, getmembers, isfunction, signature, _empty, ismodule
 from distutils.dir_util import copy_tree, DistutilsFileError
 import re
+from distutils.dir_util import copy_tree
 
 from .documented import FunctionToDocument, ClassToDocument
 from .utils import Formatter, _modules_utils
@@ -349,6 +350,7 @@ def create_docstrings_from_package(path_or_package, formatter: Formatter = Forma
 	-------
 	None
 	"""
+
 	def new_path_module(module, package_path: str):
 		# return the new path for a module
 		if new_package_path is not None:
