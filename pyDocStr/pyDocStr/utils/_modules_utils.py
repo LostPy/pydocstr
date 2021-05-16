@@ -25,7 +25,6 @@ def _import_from_path(path: str):
 			path = os.path.join(path, '__init__.py')
 		spec = spec_from_file_location(module_name, path)
 		module = module_from_spec(spec)
-		print(module)
 		spec.loader.exec_module(module)
 
 		return module
